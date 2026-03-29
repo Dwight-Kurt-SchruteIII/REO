@@ -1,0 +1,46 @@
+@RealEstateApi_HostAddress = http://localhost:5106
+
+### GET all 
+GET {{RealEstateApi_HostAddress}}/properties
+Accept: application/json
+
+###
+
+### GET by ID
+GET {{RealEstateApi_HostAddress}}/properties/1
+Accept: application/json
+
+###
+
+### CREATE 
+POST {{RealEstateApi_HostAddress}}/properties
+Content-Type: application/json
+
+{
+  "name": "Beach House",
+  "address": "Ocean Street 5",
+  "house": true,
+  "purchasePrice": 400000,
+  "currentValue": 450000,
+  "purchaseDate": "2020-05-01"
+}
+
+###
+
+### UPDATE 
+PUT {{RealEstateApi_HostAddress}}/properties/1
+Content-Type: application/json
+
+{
+  "name": "Updated Cottage",
+  "address": "123 Main St",
+  "house": true,
+  "purchasePrice": 250000,
+  "currentValue": 350000,
+  "purchaseDate": "2015-06-01"
+}
+
+###
+
+### DELETE property
+DELETE {{RealEstateApi_HostAddress}}/properties/1

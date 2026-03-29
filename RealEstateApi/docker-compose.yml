@@ -1,0 +1,34 @@
+services:
+  sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: realestate-sql
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: ${MSSQL_SA_PASSWORD}
+    ports:
+      - "1434:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: realestate-api
+    depends_on:
+      - sql
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__DefaultConnection: Server=sql,1433;Database=RealEstateDb;User Id=sa;Password=${MSSQL_SA_PASSWORD};Encrypt=True;TrustServerCertificate=True
+      JWT__SecretKey: ${JWT_SECRET_KEY}
+      JWT__Issuer: Api
+      JWT__Audience: ApiUsers
+      JWT__ExpirationMinutes: "60"
+      Auth__AdminPassword: ${AUTH_ADMIN_PASSWORD}
+      Auth__ManagerPassword: ${AUTH_MANAGER_PASSWORD}
+    ports:
+      - "5106:8080"
+
+volumes:
+  sql_data:

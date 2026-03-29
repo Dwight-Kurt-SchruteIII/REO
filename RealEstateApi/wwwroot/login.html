@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign In | RealEstate Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true"></div>
+
+  <main class="login-screen">
+    <section class="login-card">
+      <p class="eyebrow">RealEstateApi</p>
+      <h1>Sign In</h1>
+      <p class="muted">You need to sign in before entering the workspace.</p>
+
+      <form id="loginPageForm" class="stack-form">
+        <label>Username
+          <input id="username" name="username" autocomplete="username" required>
+        </label>
+        <label>Password
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+        </label>
+        <button id="submitLogin" class="btn btn-primary" type="submit">Sign In</button>
+      </form>
+    </section>
+  </main>
+
+  <div id="notice" class="notice hidden"></div>
+
+  <script type="module" src="/login.js"></script>
+</body>
+</html>

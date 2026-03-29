@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RealEstate Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true"></div>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">RealEstateApi Demo UI</p>
+        <h1>Property and Contract Workspace</h1>
+      </div>
+      <div class="topbar-actions">
+        <div class="status-row">
+          <span id="apiStatus" class="status-badge status-offline">API offline</span>
+          <button id="refreshBtn" class="btn btn-ghost" type="button">Refresh</button>
+        </div>
+        <div class="auth-row">
+          <p id="authMeta" class="auth-meta">Not signed in</p>
+          <button id="logoutBtn" class="btn btn-ghost hidden" type="button">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel panel-left">
+        <div class="panel-head">
+          <h2>Properties</h2>
+          <span id="propertyCount" class="counter">0</span>
+        </div>
+
+        <div id="propertyList" class="property-list"></div>
+
+        <form id="createPropertyForm" class="stack-form">
+          <h3>Create Property</h3>
+          <label>Name
+            <input name="name" required minlength="3" maxlength="150" placeholder="Byt Brno">
+          </label>
+          <label>Address
+            <input name="address" required minlength="5" maxlength="250" placeholder="Masarykova 10, Brno">
+          </label>
+          <label>Purchase Price
+            <input name="purchasePrice" type="number" min="0" step="0.01" required>
+          </label>
+          <label>Current Value
+            <input name="currentValue" type="number" min="0" step="0.01" required>
+          </label>
+          <label>Purchase Date
+            <input name="purchaseDate" type="date" required>
+          </label>
+          <label class="inline-check">
+            <input name="house" type="checkbox">
+            <span>House</span>
+          </label>
+          <button class="btn btn-primary" type="submit" data-write-action="true">Create Property</button>
+        </form>
+      </section>
+
+      <section class="panel panel-right">
+        <div id="emptyState" class="empty-state">
+          <h2>No selected property</h2>
+          <p>Create or select a property from the left panel.</p>
+        </div>
+
+        <div id="workspace" class="workspace hidden">
+          <div class="panel-head space-between">
+            <div>
+              <p class="eyebrow">Selected property</p>
+              <h2 id="selectedPropertyName">-</h2>
+              <p id="selectedPropertyMeta" class="muted">-</p>
+            </div>
+            <button id="deletePropertyBtn" class="btn btn-danger" type="button" data-write-action="true">Delete Property</button>
+          </div>
+
+          <div class="accordion-stack">
+            <details id="propertyFullUpdateDetails" class="accordion-card">
+              <summary>Property Full Update (PUT)</summary>
+              <form id="updatePropertyForm" class="stack-form compact">
+                <label>Name
+                  <input name="name" required minlength="3" maxlength="150">
+                </label>
+                <label>Address
+                  <input name="address" required minlength="5" maxlength="250">
+                </label>
+                <label>Purchase Price
+                  <input name="purchasePrice" type="number" min="0" step="0.01" required>
+                </label>
+                <label>Current Value
+                  <input name="currentValue" type="number" min="0" step="0.01" required>
+                </label>
+                <label>Purchase Date
+                  <input name="purchaseDate" type="date" required>
+                </label>
+                <label class="inline-check">
+                  <input name="house" type="checkbox">
+                  <span>House</span>
+                </label>
+                <button class="btn btn-secondary" type="submit" data-write-action="true">Save Full Update</button>
+              </form>
+            </details>
+
+            <details id="propertyPatchDetails" class="accordion-card">
+              <summary>Property Quick Patch</summary>
+              <form id="patchPropertyForm" class="stack-form compact">
+                <p class="muted">Send only changed fields.</p>
+                <label>Address (optional)
+                  <input name="address" minlength="5" maxlength="250" placeholder="Only if you want to change it">
+                </label>
+                <label>Current Value (optional)
+                  <input name="currentValue" type="number" min="0" step="0.01" placeholder="Only if you want to change it">
+                </label>
+                <label>Purchase Date (optional)
+                  <input name="purchaseDate" type="date">
+                </label>
+                <button class="btn btn-secondary" type="submit" data-write-action="true">Apply Patch</button>
+              </form>
+            </details>
+          </div>
+
+          <section class="contracts-section">
+            <div class="panel-head">
+              <h3>Tenant Contracts</h3>
+              <div class="head-actions">
+                <button id="openCreateTenantPageBtn" class="btn btn-primary" type="button" data-write-action="true">Create Tenant</button>
+                <span id="contractCount" class="counter">0</span>
+              </div>
+            </div>
+            <div id="contractsList" class="contract-list"></div>
+
+            <div id="emptyContractState" class="empty-state compact-empty">
+              <p>No selected contract. Click a contract card to edit or patch it.</p>
+            </div>
+
+            <div id="contractWorkspace" class="hidden">
+              <div class="panel-head space-between">
+                <div>
+                  <p class="eyebrow">Selected contract</p>
+                  <h3 id="selectedContractName">-</h3>
+                  <p id="selectedContractMeta" class="muted">-</p>
+                </div>
+                <button id="deleteContractBtn" class="btn btn-danger" type="button" data-write-action="true">Delete Contract</button>
+              </div>
+
+              <div class="accordion-stack tenant-edit-stack">
+                <details id="tenantPatchDetails" class="accordion-card">
+                  <summary>Tenant Quick Patch</summary>
+                  <form id="patchContractForm" class="stack-form compact">
+                    <p class="muted">Send only changed fields.</p>
+                    <label>Tenant Name (optional)
+                      <input name="tenantName" minlength="2" maxlength="120" placeholder="Only if you want to change it">
+                    </label>
+                    <label>Monthly Rent (optional)
+                      <input name="monthlyRent" type="number" min="0.01" step="0.01">
+                    </label>
+                    <label>End Date (optional)
+                      <input name="endDate" type="date">
+                    </label>
+                    <button class="btn btn-secondary" type="submit" data-write-action="true">Apply Patch</button>
+                  </form>
+                </details>
+
+                <details id="tenantPaymentDetails" class="accordion-card">
+                  <summary>Create Payment</summary>
+                  <form id="createPaymentInlineForm" class="stack-form compact payment-form">
+                    <p class="muted">Stay on this page and create payment for selected tenant.</p>
+                    <label>Payment Date
+                      <input name="paymentDate" type="date" required>
+                    </label>
+                    <label>Rent (Amount)
+                      <input name="amount" type="number" min="0" step="0.01" required>
+                    </label>
+                    <button class="btn btn-primary" type="submit" data-write-action="true">Create Payment</button>
+                  </form>
+                </details>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="notice" class="notice hidden"></div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

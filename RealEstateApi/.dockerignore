@@ -1,0 +1,8 @@
+bin/
+obj/
+.git/
+.vs/
+.vscode/
+RealEstateApi.Tests/bin/
+RealEstateApi.Tests/obj/
+.env
