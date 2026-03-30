@@ -1,6 +1,6 @@
 # RealEstateApi
 
-Domácí projektna procvičení moderních backendových technologií v .NET.
+Domácí projekt na procvičení moderních backendových technologií v .NET.
 
 Jednoduchá REST API pro správu nemovitostí, nájemních smluv a plateb.
 
