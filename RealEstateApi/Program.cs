@@ -9,11 +9,31 @@ using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
 
 var builder = WebApplication.CreateBuilder(args);
 
 LoadDotEnv(builder.Environment.ContentRootPath);
 builder.Configuration.AddEnvironmentVariables();
+
+var elasticUri = builder.Configuration["ElasticSearch:Uri"] ?? "http://localhost:9200"; // Defaultne, protoze lokalne jiz bezi Elasticsearch!!!!
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .Enrich.WithProperty("Application", "RealEstateApi")
+    .WriteTo.Console()
+    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticUri))
+    {
+        AutoRegisterTemplate = true,
+        AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv8,
+        IndexFormat = $"realestate-logs-{DateTime.UtcNow:yyyy-MM}",
+        NumberOfShards = 1,
+        NumberOfReplicas = 0
+    })
+    .CreateLogger();
+builder.Host.UseSerilog();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
