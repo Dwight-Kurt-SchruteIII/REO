@@ -11,12 +11,12 @@ public sealed class TestApiFactory : WebApplicationFactory<Program>
 {
     static TestApiFactory()
     {
-        Environment.SetEnvironmentVariable("JWT__SecretKey", "test_jwt_secret_key_1234567890123456");
+        Environment.SetEnvironmentVariable("JWT__SecretKey", "ci-test-only-key-not-used-in-prod-xxxxx");
         Environment.SetEnvironmentVariable("JWT__Issuer", "Api");
         Environment.SetEnvironmentVariable("JWT__Audience", "ApiUsers");
         Environment.SetEnvironmentVariable("JWT__ExpirationMinutes", "60");
-        Environment.SetEnvironmentVariable("Auth__AdminPassword", "Admin123!");
-        Environment.SetEnvironmentVariable("Auth__ManagerPassword", "Manager123!");
+        Environment.SetEnvironmentVariable("Auth__AdminPassword", "ci-test-admin");
+        Environment.SetEnvironmentVariable("Auth__ManagerPassword", "ci-test-manager");
     }
 
     private readonly string _databaseName = $"RealEstateApiTests-{Guid.NewGuid()}";
