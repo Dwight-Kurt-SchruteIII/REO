@@ -1,0 +1,65 @@
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Platby";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 fw-bold mb-1">Platby</h1>
+        <p class="text-muted mb-0">Přehled všech plateb</p>
+    </div>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPaymentModal">
+        <i class="bi bi-plus-lg me-1"></i>Přidat platbu
+    </button>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div id="paymentsList" class="list-group list-group-flush">
+        <div class="list-group-item text-muted text-center py-4">
+            <span class="spinner-border spinner-border-sm me-2"></span>Načítám...
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="createPaymentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-credit-card text-primary me-2"></i>Přidat platbu
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createPaymentForm">
+                    <div class="mb-3">
+                        <label class="form-label">Nájemník</label>
+                        <select class="form-select" name="contractId" id="paymentContractSelect" required>
+                            <option value="">Vyberte nájemníka...</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Částka (Kč)</label>
+                        <input class="form-control" type="number" name="amount" placeholder="0" min="0" required />
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Datum platby</label>
+                            <input class="form-control" type="date" name="paymentDate" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Splatnost <span class="text-muted">(nepovinné)</span></label>
+                            <input class="form-control" type="date" name="dueDate" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Zrušit</button>
+                <button type="submit" form="createPaymentForm" class="btn btn-primary">
+                    <i class="bi bi-check-lg me-1"></i>Přidat platbu
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

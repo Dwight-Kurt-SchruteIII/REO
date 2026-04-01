@@ -1,0 +1,73 @@
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Nemovitosti";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 fw-bold mb-1">Nemovitosti</h1>
+        <p class="text-muted mb-0">Přehled všech nemovitostí</p>
+    </div>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPropertyModal">
+        <i class="bi bi-plus-lg me-1"></i>Přidat nemovitost
+    </button>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div id="propertiesList" class="list-group list-group-flush">
+        <div class="list-group-item text-muted text-center py-4">
+            <span class="spinner-border spinner-border-sm me-2"></span>Načítám...
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="createPropertyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createPropertyModalLabel">
+                    <i class="bi bi-house-add text-primary me-2"></i>Přidat nemovitost
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createPropertyForm">
+                    <div class="mb-3">
+                        <label class="form-label">Název</label>
+                        <input class="form-control" type="text" name="propertyName" placeholder="např. Byt Praha 2" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Adresa</label>
+                        <input class="form-control" type="text" name="address" placeholder="Ulice, město" required />
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="houseCheck" name="house" />
+                            <label class="form-check-label" for="houseCheck">Dům</label>
+                        </div>
+                    </div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Kupní cena (Kč)</label>
+                            <input class="form-control" type="number" name="purchasePrice" placeholder="0" min="0" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Aktuální hodnota (Kč)</label>
+                            <input class="form-control" type="number" name="currentValue" placeholder="0" min="0" required />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Datum koupě</label>
+                        <input class="form-control" type="date" name="purchaseDate" required />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Zrušit</button>
+                <button type="submit" form="createPropertyForm" class="btn btn-primary">
+                    <i class="bi bi-check-lg me-1"></i>Vytvořit nemovitost
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
